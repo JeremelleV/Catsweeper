@@ -1,0 +1,22 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot import cache
+.import/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Exported builds (won’t commit final binaries)
+bin/
+export/
+*.exe
+*.apk
+*.aab
+*.ipa
+*.zip
+*.pck
+*.wasm
+*.html
