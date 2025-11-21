@@ -10,7 +10,7 @@ var state: CellState = CellState.HIDDEN
 @onready var tile_rect: ColorRect = $TileRect
 @onready var number_label: Label = $TileRect/NumberLabel
 @onready var background: Sprite2D = $Background
-@onready var foreground: Sprite2D = $Foreground
+@onready var foreground: AnimatedSprite2D = $Foreground
 
 @export var tex_hidden_cat: Texture2D
 @export var tex_water: Texture2D
@@ -36,10 +36,13 @@ func reveal() -> void:
 	state = CellState.REVEALED
 	_refresh_visual()
 
-	# Simple pop/sink animation for now
-	scale = Vector2(1.2,1.2)
-	var tween: Tween = create_tween()
-	tween.tween_property(self,"scale",Vector2(1.0,1.0),0.1)
+	if has_mine:
+		if foreground:
+			scale = Vector2(1.2,1.2)
+			var tween: Tween = create_tween()
+			tween.tween_property(self,"scale",Vector2(1.0,1.0),0.1)
+	else:
+		_play_sink_animation()
 
 func reveal_with_delay(delay: float) -> void:
 	reveal()
@@ -83,52 +86,71 @@ func play_pee_poo_wave(delay: float) -> void:
 	)
 
 func _refresh_visual() -> void:
-	# 1) Background: always water (blue)
 	if tex_water:
 		background.texture = tex_water
 	else:
 		background.texture = null
-
-	# Reset background tint to normal blue each time we refresh
-	# (pee wave will override this with yellow when game is over)
 	background.modulate = Color(1, 1, 1, 1)
 
-	# 2) Foreground + label depend on state
 	match state:
 		CellState.HIDDEN:
-			# Hidden cat sitting in bath
 			tile_rect.color = Color(0, 0, 0, 0) 
 			number_label.text = ""
 
-			if tex_hidden_cat:
-				foreground.texture = tex_hidden_cat
-			else:
-				foreground.texture = null
+			if foreground.sprite_frames and foreground.sprite_frames.has_animation("idle"):
+				foreground.play("idle")
+				foreground.visible = true
 
 		CellState.FLAGGED:
 			tile_rect.color = Color(0, 0, 0, 0)
 			number_label.text = ""
 
 			if tex_flag_icon:
-				foreground.texture = tex_flag_icon
-			else:
-				foreground.texture = null
+				foreground.stop()
+				foreground.visible = true
+				foreground.frame = 0
 
 		CellState.REVEALED:
-			tile_rect.color = Color(0, 0, 0, 0)  # might not matter much if background covers it
+			tile_rect.color = Color(0, 0, 0, 0) 
 
 			if has_mine:
-				# Mine cat on top of water
 				number_label.text = ""
 				if tex_mine_cat:
-					foreground.texture = tex_mine_cat
-				else:
-					foreground.texture = null
-			else:
-				# Safe tile: just numbers on water
-				foreground.texture = null
+					foreground.stop()
+					foreground.visible = true
+					foreground.frame = 0
+					foreground.play("mine")
+					foreground.visible = true
 
+			else:
 				if neighbour_count > 0:
 					number_label.text = str(neighbour_count)
 				else:
 					number_label.text = ""
+
+func _play_sink_animation() -> void:
+	if foreground == null or foreground.sprite_frames == null:
+		return
+		
+	if not foreground.sprite_frames.has_animation("sink"):
+		return
+		
+	foreground.visible = true
+	foreground.play("sink")
+	
+	foreground.animation_finished.connect(
+		Callable(self,"_on_sink_animation_finished"),
+		CONNECT_ONE_SHOT
+	)
+
+func _on_sink_animation_finished() -> void:
+	if foreground.animation == "sink":
+		foreground.visible = false
+		foreground.stop()
+		foreground.animation = "idle"
+		foreground.frame = 0
+
+func _clear_foreground() -> void:
+	foreground.texture = null
+	foreground.position = Vector2(0,0)
+	foreground.modulate = Color(1,1,1,1)

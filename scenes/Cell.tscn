@@ -1,9 +1,49 @@
-[gd_scene load_steps=5 format=3 uid="uid://cwvnqkt4wh0ye"]
+[gd_scene load_steps=10 format=3 uid="uid://cwvnqkt4wh0ye"]
 
 [ext_resource type="Script" uid="uid://dj60g1781chtc" path="res://scripts/Cell.gd" id="1_rd428"]
 [ext_resource type="Texture2D" uid="uid://cufhc8v58m7ov" path="res://assets/sprites/Hidden_Cat_Idle.png" id="2_8ypbm"]
 [ext_resource type="Texture2D" uid="uid://cl1jxjc42ha64" path="res://assets/sprites/Water_Empty.png" id="3_g6ws7"]
 [ext_resource type="Texture2D" uid="uid://cs0jtmb1u3a84" path="res://assets/sprites/Mine_Cat.png" id="4_60yta"]
+[ext_resource type="Texture2D" uid="uid://ctt4jw8dpi8vn" path="res://assets/sprites/cat_sink_0.png" id="5_yo6he"]
+[ext_resource type="Texture2D" uid="uid://dhnansl7xa8p1" path="res://assets/sprites/cat_sink_1.png" id="6_t8vqj"]
+[ext_resource type="Texture2D" uid="uid://b5h8017005kai" path="res://assets/sprites/cat_sink_2.png" id="7_cj7bp"]
+[ext_resource type="Texture2D" uid="uid://cy702yqdn205m" path="res://assets/sprites/cat_sink_3.png" id="8_tmxxh"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aiedm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_8ypbm")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_60yta")
+}],
+"loop": true,
+"name": &"mine",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_yo6he")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_t8vqj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_cj7bp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_tmxxh")
+}],
+"loop": false,
+"name": &"sink",
+"speed": 4.0
+}]
 
 [node name="Cell" type="Node2D"]
 script = ExtResource("1_rd428")
@@ -26,5 +66,7 @@ offset_bottom = 23.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Foreground" type="Sprite2D" parent="."]
+[node name="Foreground" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_aiedm")
+animation = &"mine"
 centered = false
