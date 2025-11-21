@@ -131,16 +131,6 @@ func _calculate_neighbours() -> void:
 			# Keep visuals up-to-date for future reveals
 			# (actual text only shows when revealed)
 
-'''
-func _reveal_cell(x: int, y: int) -> void:
-	var cell = cells[y][x]
-	if cell["state"] == CellState.REVEALED:
-		return
-
-	cell["state"] = CellState.REVEALED
-	_update_tile_visual(x, y)
-'''
-
 func _flood_fill_from(x_start: int, y_start: int) -> void:
 	var stack: Array = []
 	stack.append(Vector2i(x_start, y_start))
@@ -151,6 +141,7 @@ func _flood_fill_from(x_start: int, y_start: int) -> void:
 		var y := pos.y
 
 		var cell = cells[y][x]
+		
 		if cell.state == CellState.REVEALED:
 			continue
 
@@ -189,27 +180,3 @@ func _check_win_condition() -> void:
 
 	game_over = true
 	print("You win! 🎉")
-
-'''
-func _update_tile_visual(x: int, y: int) -> void:
-	var tile: ColorRect = cells[y][x]
-	var label: Label = cell_labels[y][x]
-	var cell = board_data[y][x]
-
-	match cell["state"]:
-		CellState.HIDDEN:
-			tile.color = Color(0.2, 0.2, 0.2)
-			label.text = ""
-
-		CellState.FLAGGED:
-			tile.color = Color(0.8, 0.8, 0.2)
-			label.text = "F"
-
-		CellState.REVEALED:
-			if cell["has_mine"]:
-				tile.color = Color(0.6, 0, 0)
-				label.text = "X"
-			else:
-				tile.color = Color(0.1, 0.3, 0.5)
-				var n: int = cell["neighbour_count"]
-				label.text = str(n) if n > 0 else "" '''
