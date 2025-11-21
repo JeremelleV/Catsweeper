@@ -159,6 +159,9 @@ func _flood_fill_from(x_start: int, y_start: int) -> void:
 					stack.append(Vector2i(nx, ny))
 
 func _trigger_mine(x: int, y: int) -> void:
+	if game_over:
+		return
+	
 	game_over = true
 
 	for yy in range(rows):
@@ -168,8 +171,22 @@ func _trigger_mine(x: int, y: int) -> void:
 				cell.show_mine_revealed()
 
 	cells[y][x].show_mine_triggered()
+	
+	_start_pee_wave_from(x,y)
+	
 	print("Game over – you clicked a mine.")
 
+func _start_pee_wave_from(mx: int, my: int) -> void:
+	for y in range(rows):
+		for x in range(cols):
+			var dx: int = abs(x - mx)
+			var dy: int = abs(y - my)
+			
+			var distance: int  = max(dx,dy)
+			var delay := float(distance) * 0.04 # tweak 0.04 for wave speed
+			
+			var cell = cells[y][x]
+			cell.play_pee_poo_wave(delay)
 
 func _check_win_condition() -> void:
 	for y in range(rows):
