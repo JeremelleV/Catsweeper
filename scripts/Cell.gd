@@ -9,7 +9,8 @@ var state: CellState = CellState.HIDDEN
 
 @onready var tile_rect: ColorRect = $TileRect
 @onready var number_label: Label = $TileRect/NumberLabel
-@onready var sprite: Sprite2D = $Sprite
+@onready var background: Sprite2D = $Background
+@onready var foreground: Sprite2D = $Foreground
 
 @export var tex_hidden_cat: Texture2D
 @export var tex_water: Texture2D
@@ -19,9 +20,14 @@ var state: CellState = CellState.HIDDEN
 func setup(x: int, y: int, size: int) -> void:
 	coord = Vector2i(x, y)
 	position = Vector2(x * size, y * size)
-	tile_rect.size = Vector2(size, size)
-	_refresh_visual()
 
+	tile_rect.size = Vector2(size, size)
+
+	# Background & foreground both align to top-left of the cell
+	background.position = Vector2(0, 0)
+	foreground.position = Vector2(0, 0)
+
+	_refresh_visual()
 
 func reveal() -> void:
 	if state == CellState.REVEALED:
@@ -61,47 +67,67 @@ func show_mine_revealed() -> void:
 	_refresh_visual()
 
 func play_pee_poo_wave(delay: float) -> void:
-	# Placeholder for future pee/poo ripple animation
-	# Later we’ll animate a colored overlay with this delay.
-	pass
-
+	var tween := create_tween()
+	if delay > 0.0:
+		tween.tween_interval(delay)
+		
+	# Start from normal
+	background.modulate = Color(1,1,1,1)
+	
+	# Tween to a yellowish tint 
+	tween.tween_property(
+		background,
+		"modulate",
+		Color(1.2,1.2,0.4,1.0),
+		0.15
+	)
 
 func _refresh_visual() -> void:
+	# 1) Background: always water (blue)
+	if tex_water:
+		background.texture = tex_water
+	else:
+		background.texture = null
+
+	# Reset background tint to normal blue each time we refresh
+	# (pee wave will override this with yellow when game is over)
+	background.modulate = Color(1, 1, 1, 1)
+
+	# 2) Foreground + label depend on state
 	match state:
 		CellState.HIDDEN:
-			tile_rect.color = Color(0.2, 0.2, 0.2)
+			# Hidden cat sitting in bath
+			tile_rect.color = Color(0, 0, 0, 0) 
 			number_label.text = ""
-			
+
 			if tex_hidden_cat:
-				sprite.texture = tex_hidden_cat
+				foreground.texture = tex_hidden_cat
 			else:
-				sprite.texture = null
+				foreground.texture = null
 
 		CellState.FLAGGED:
-			tile_rect.color = Color(0.8, 0.8, 0.2)
+			tile_rect.color = Color(0, 0, 0, 0)
+			number_label.text = ""
+
 			if tex_flag_icon:
-				sprite.texture = tex_flag_icon
-				number_label.text = ""
+				foreground.texture = tex_flag_icon
 			else:
-				sprite.texture = null
-				number_label.text = "F"
+				foreground.texture = null
 
 		CellState.REVEALED:
+			tile_rect.color = Color(0, 0, 0, 0)  # might not matter much if background covers it
+
 			if has_mine:
-				tile_rect.color = Color(0.6, 0, 0)
+				# Mine cat on top of water
+				number_label.text = ""
 				if tex_mine_cat:
-					sprite.texture = tex_mine_cat
-					number_label.text = ""
+					foreground.texture = tex_mine_cat
 				else:
-					sprite.texture = null
-					number_label.text = "X"
+					foreground.texture = null
 			else:
-				tile_rect.color = Color(0.1, 0.3, 0.5)
-				if tex_water:
-					sprite.texture = tex_water
-				else:
-					sprite.texture = null
-					
+				# Safe tile: just numbers on water
+				foreground.texture = null
+
 				if neighbour_count > 0:
 					number_label.text = str(neighbour_count)
 				else:
