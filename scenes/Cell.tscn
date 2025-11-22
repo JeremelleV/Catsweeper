@@ -42,7 +42,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"sink",
-"speed": 4.0
+"speed": 8.0
 }]
 
 [node name="Cell" type="Node2D"]
@@ -68,5 +68,5 @@ vertical_alignment = 1
 
 [node name="Foreground" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_aiedm")
-animation = &"mine"
+animation = &"sink"
 centered = false

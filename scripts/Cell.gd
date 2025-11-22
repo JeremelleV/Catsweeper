@@ -45,7 +45,16 @@ func reveal() -> void:
 		_play_sink_animation()
 
 func reveal_with_delay(delay: float) -> void:
-	reveal()
+	if state == CellState.REVEALED:
+		return
+	
+	if delay <= 0.0:
+		reveal()
+		return
+	
+	var tween = create_tween()
+	tween.tween_interval(delay)
+	tween.tween_callback(Callable(self,"reveal"))
 
 func toggle_flag() -> void:
 	if state == CellState.REVEALED:

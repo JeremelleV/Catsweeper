@@ -132,31 +132,42 @@ func _calculate_neighbours() -> void:
 			# (actual text only shows when revealed)
 
 func _flood_fill_from(x_start: int, y_start: int) -> void:
-	var stack: Array = []
-	stack.append(Vector2i(x_start, y_start))
-
-	while stack.size() > 0:
-		var pos: Vector2i = stack.pop_back()
-		var x := pos.x
-		var y := pos.y
-
+	var queue: Array = []
+	var dist_map = {}
+	
+	var start = Vector2i(x_start,y_start)
+	queue.append(start)
+	dist_map[start] = 0
+	
+	while queue.size() > 0:
+		var pos = queue.pop_front()
+		var x = pos.x
+		var y = pos.y
+		
+		var d = int(dist_map[pos])
 		var cell = cells[y][x]
 		
 		if cell.state == CellState.REVEALED:
 			continue
-
-		cell.reveal()
-
+		
+		var delay = float(d) * 0.12 	# tweak for wave speed
+		cell.reveal_with_delay(delay)
+		
 		if cell.neighbour_count != 0:
 			continue
-
-		for ny in range(max(0, y - 1), min(rows, y + 2)):
-			for nx in range(max(0, x - 1), min(cols, x + 2)):
+		
+		for ny in range(max(0,y - 1), min(rows, y + 2)):
+			for nx in range(max(0,x - 1), min(cols, x + 2)):
 				if nx == x and ny == y:
 					continue
+					
 				var neighbour = cells[ny][nx]
+				
 				if neighbour.state == CellState.HIDDEN and not neighbour.has_mine:
-					stack.append(Vector2i(nx, ny))
+					var npos = Vector2i(nx,ny)
+					if not dist_map.has(npos):
+						dist_map[npos] = d + 1
+						queue.append(npos)
 
 func _trigger_mine(x: int, y: int) -> void:
 	if game_over:
@@ -183,7 +194,7 @@ func _start_pee_wave_from(mx: int, my: int) -> void:
 			var dy: int = abs(y - my)
 			
 			var distance: int  = max(dx,dy)
-			var delay := float(distance) * 0.04 # tweak 0.04 for wave speed
+			var delay := float(distance) * 0.12 # tweak 0.04 for wave speed
 			
 			var cell = cells[y][x]
 			cell.play_pee_poo_wave(delay)
