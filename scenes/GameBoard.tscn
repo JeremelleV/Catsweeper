@@ -1,6 +1,36 @@
-[gd_scene load_steps=2 format=3 uid="uid://nkm8fciwnko2"]
+[gd_scene load_steps=3 format=3 uid="uid://nkm8fciwnko2"]
 
 [ext_resource type="Script" uid="uid://6y5et454cqyo" path="res://scripts/GameBoard.gd" id="1_nx74b"]
+[ext_resource type="Texture2D" uid="uid://dq40ggyo7xrir" path="res://assets/backgrounds/mock_bg.png" id="2_v0kx6"]
 
-[node name="GameBoard" type="Node2D"]
+[node name="MainGame" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BathhouseBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_v0kx6")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameBoard" type="Node2D" parent="CenterContainer"]
 script = ExtResource("1_nx74b")
