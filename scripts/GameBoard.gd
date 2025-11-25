@@ -27,11 +27,26 @@ func _create_board() -> void:
 	cells.clear()
 	first_click_done = false
 	game_over = false
-
+	
+	###
+	var board_width = cols * cell_size
+	var board_height = rows * cell_size
+	
+	var wrapper = get_parent()
+	
+	if wrapper is Control:
+		wrapper.custom_minimum_size = Vector2(board_width,board_height)
+	
+	position = Vector2.ZERO #(-board_width / 2, -board_height / 2)
+	###
+	
 	for y in range(rows):
 		var row: Array = []
 		for x in range(cols):
 			var cell = CellScene.instantiate()
+			
+			cell.position = Vector2(x * cell_size, y * cell_size)
+			
 			add_child(cell)  
 			cell.call_deferred("setup", x, y, cell_size)  
 			row.append(cell)

@@ -30,5 +30,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GameBoard" type="Node2D" parent="CenterContainer"]
+[node name="BoardWrapper" type="Control" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="GameBoard" type="Node2D" parent="CenterContainer/BoardWrapper"]
+position = Vector2(-576, -324)
 script = ExtResource("1_nx74b")
