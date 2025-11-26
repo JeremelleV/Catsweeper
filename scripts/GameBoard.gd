@@ -8,6 +8,8 @@ extends Node2D
 @onready var main_game_root = get_parent().get_parent().get_parent()
 
 @onready var bg_texture_rect: TextureRect = main_game_root.get_node("BathhouseBackground")
+
+@onready var replay_button = get_parent().get_node("ReplayButton")
 ###
 
 @export var cols: int = 9
@@ -74,6 +76,7 @@ func _create_board() -> void:
 			row.append(cell)
 		cells.append(row)
 
+	replay_button.hide()
 
 func _input(event: InputEvent) -> void:
 	if game_over:
@@ -211,6 +214,7 @@ func _trigger_mine(x: int, y: int) -> void:
 		return
 	
 	game_over = true
+	replay_button.show()
 
 	for yy in range(rows):
 		for xx in range(cols):
@@ -242,6 +246,12 @@ func _check_win_condition() -> void:
 			var cell = cells[y][x]
 			if not cell.has_mine and cell.state != CellState.REVEALED:
 				return
-
 	game_over = true
+	replay_button.show()
 	print("You win! 🎉")
+
+func _on_replay_button_pressed():
+	replay_button.hide()
+	
+	_create_board()
+	_update_background()

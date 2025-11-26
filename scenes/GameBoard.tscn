@@ -37,3 +37,13 @@ position = Vector2(-576, -324)
 script = ExtResource("1_nx74b")
 vertical_bg_texture = ExtResource("2_fbkij")
 horizontal_bg_texture = ExtResource("3_p2sq2")
+
+[node name="ReplayButton" type="Button" parent="CenterContainer/BoardWrapper"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 500.0
+offset_right = 200.0
+offset_bottom = 550.0
+text = "Play Again"
+
+[connection signal="pressed" from="CenterContainer/BoardWrapper/ReplayButton" to="CenterContainer/BoardWrapper/GameBoard" method="_on_replay_button_pressed"]

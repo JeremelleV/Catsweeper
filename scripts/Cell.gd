@@ -27,6 +27,12 @@ func setup(x: int, y: int, size: int) -> void:
 	background.position = Vector2(0, 0)
 	foreground.position = Vector2(0, 0)
 
+	###
+	if foreground and foreground.sprite_frames and foreground.sprite_frames.has_animation("idle"):
+		foreground.stop()
+		foreground.play("idle")
+		foreground.visible = true
+
 	_refresh_visual()
 
 func reveal() -> void:
@@ -117,17 +123,17 @@ func _refresh_visual() -> void:
 			if tex_flag_icon:
 				foreground.stop()
 				foreground.visible = true
-				foreground.frame = 0
+				#foreground.frame = 0
 
 		CellState.REVEALED:
 			tile_rect.color = Color(0, 0, 0, 0) 
 
 			if has_mine:
 				number_label.text = ""
-				if tex_mine_cat:
+				if foreground.sprite_frames and foreground.sprite_frames.has_animation("mine"):
 					foreground.stop()
-					foreground.visible = true
-					foreground.frame = 0
+					#foreground.visible = true
+					#foreground.frame = 0
 					foreground.play("mine")
 					foreground.visible = true
 
@@ -158,8 +164,3 @@ func _on_sink_animation_finished() -> void:
 		foreground.stop()
 		foreground.animation = "idle"
 		foreground.frame = 0
-
-func _clear_foreground() -> void:
-	foreground.texture = null
-	foreground.position = Vector2(0,0)
-	foreground.modulate = Color(1,1,1,1)
