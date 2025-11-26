@@ -1,5 +1,15 @@
 extends Node2D
 
+###
+@export var vertical_bg_texture: Texture2D 
+@export var horizontal_bg_texture: Texture2D
+
+# The path is: self (Gameboard) -> parent (BoardWrapper) -> parent (CenterContainer) -> parent (MainGame)
+@onready var main_game_root = get_parent().get_parent().get_parent()
+
+@onready var bg_texture_rect: TextureRect = main_game_root.get_node("BathhouseBackground")
+###
+
 @export var cols: int = 9
 @export var rows: int = 9
 @export var cell_size: int = 32
@@ -19,6 +29,18 @@ func _ready() -> void:
 	rng.randomize()
 	_create_board()
 
+	_update_background()
+	get_viewport().size_changed.connect(_update_background)
+
+func _update_background():
+	var viewport_size = get_viewport_rect().size
+	
+	if viewport_size.x > viewport_size.y:
+		bg_texture_rect.texture = horizontal_bg_texture
+	else:
+		bg_texture_rect.texture = vertical_bg_texture
+	
+	bg_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 
 func _create_board() -> void:
 	for child in get_children():
