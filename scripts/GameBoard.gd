@@ -5,11 +5,11 @@ extends Node2D
 @export var horizontal_bg_texture: Texture2D
 
 # The path is: self (Gameboard) -> parent (BoardWrapper) -> parent (CenterContainer) -> parent (MainGame)
-@onready var main_game_root = get_parent().get_parent().get_parent()
+@onready var main_game_root: Control = get_tree().get_root().get_child(0)
 
 @onready var bg_texture_rect: TextureRect = main_game_root.get_node("BathhouseBackground")
 
-@onready var replay_button = get_parent().get_node("ReplayButton")
+@onready var replay_button = get_parent().get_parent().get_parent().get_node("Top_HBox").get_node("ReplayButton")
 ###
 
 @export var cols: int = 9
@@ -255,3 +255,36 @@ func _on_replay_button_pressed():
 	
 	_create_board()
 	_update_background()
+
+func set_difficulty(difficulty_level: String) -> void:
+	match difficulty_level:
+		"easy":
+			cols = 9
+			rows = 9
+			mine_count = 10
+		"medium":
+			cols = 16
+			rows = 16
+			mine_count = 40
+		"hard":
+			cols = 30
+			rows = 16
+			mine_count = 99
+		_:
+			cols = 9
+			rows = 9
+			mine_count = 10
+	_create_board()
+	_update_background()
+
+
+func _on_easy_button_pressed() -> void:
+	set_difficulty("easy")
+
+
+func _on_medium_button_pressed() -> void:
+	set_difficulty("medium")
+
+
+func _on_hard_button_pressed() -> void:
+	set_difficulty("hard")

@@ -21,7 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="Root_VBox" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,21 +29,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BoardWrapper" type="Control" parent="CenterContainer"]
+[node name="Top_HBox" type="HBoxContainer" parent="Root_VBox"]
 layout_mode = 2
 
-[node name="GameBoard" type="Node2D" parent="CenterContainer/BoardWrapper"]
+[node name="DifficultyButtons" type="HBoxContainer" parent="Root_VBox/Top_HBox"]
+layout_mode = 2
+
+[node name="EasyButton" type="Button" parent="Root_VBox/Top_HBox/DifficultyButtons"]
+layout_mode = 2
+text = "Easy"
+
+[node name="MediumButton" type="Button" parent="Root_VBox/Top_HBox/DifficultyButtons"]
+layout_mode = 2
+text = "Medium"
+
+[node name="HardButton" type="Button" parent="Root_VBox/Top_HBox/DifficultyButtons"]
+layout_mode = 2
+text = "Hard"
+
+[node name="ReplayButton" type="Button" parent="Root_VBox/Top_HBox"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="CenterContainer" type="CenterContainer" parent="Root_VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BoardWrapper" type="Control" parent="Root_VBox/CenterContainer"]
+layout_mode = 2
+
+[node name="GameBoard" type="Node2D" parent="Root_VBox/CenterContainer/BoardWrapper"]
 position = Vector2(-576, -324)
 script = ExtResource("1_nx74b")
 vertical_bg_texture = ExtResource("2_fbkij")
 horizontal_bg_texture = ExtResource("3_p2sq2")
 
-[node name="ReplayButton" type="Button" parent="CenterContainer/BoardWrapper"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 500.0
-offset_right = 200.0
-offset_bottom = 550.0
-text = "Play Again"
-
-[connection signal="pressed" from="CenterContainer/BoardWrapper/ReplayButton" to="CenterContainer/BoardWrapper/GameBoard" method="_on_replay_button_pressed"]
+[connection signal="pressed" from="Root_VBox/Top_HBox/DifficultyButtons/EasyButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_easy_button_pressed"]
+[connection signal="pressed" from="Root_VBox/Top_HBox/DifficultyButtons/MediumButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_medium_button_pressed"]
+[connection signal="pressed" from="Root_VBox/Top_HBox/DifficultyButtons/HardButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_hard_button_pressed"]
+[connection signal="pressed" from="Root_VBox/Top_HBox/ReplayButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_replay_button_pressed"]
