@@ -28,7 +28,6 @@ func setup(x: int, y: int, size: int) -> void:
 	background.position = Vector2(0, 0)
 	foreground.position = Vector2(0, 0)
 
-	###
 	if foreground and foreground.sprite_frames and foreground.sprite_frames.has_animation("idle"):
 		foreground.stop()
 		foreground.play("idle")
@@ -89,11 +88,7 @@ func play_pee_poo_wave(delay: float) -> void:
 	var tween := create_tween()
 	if delay > 0.0:
 		tween.tween_interval(delay)
-		
-	# Start from normal
-	#background.modulate = Color(1,1,1,1)
 	
-	# Tween to a yellowish tint 
 	tween.tween_property(
 		background,
 		"modulate",
@@ -106,7 +101,6 @@ func _refresh_visual() -> void:
 		background.texture = tex_water
 	else:
 		background.texture = null
-	#background.modulate = Color(1, 1, 1, 1)
 
 	match state:
 		CellState.HIDDEN:
@@ -124,7 +118,6 @@ func _refresh_visual() -> void:
 			if tex_flag_icon:
 				foreground.stop()
 				foreground.visible = true
-				#foreground.frame = 0
 
 		CellState.REVEALED:
 			tile_rect.color = Color(0, 0, 0, 0) 
@@ -133,8 +126,6 @@ func _refresh_visual() -> void:
 				number_label.text = ""
 				if foreground.sprite_frames and foreground.sprite_frames.has_animation("mine"):
 					foreground.stop()
-					#foreground.visible = true
-					#foreground.frame = 0
 					foreground.play("mine")
 					foreground.visible = true
 
@@ -173,5 +164,3 @@ func show_sick() -> void:
 				foreground.stop()
 				foreground.play("sick")
 				foreground.visible = true
-				
-				#modulate = Color(1, 1, 1)

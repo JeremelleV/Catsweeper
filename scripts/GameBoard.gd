@@ -198,8 +198,6 @@ func _calculate_neighbours() -> void:
 						count += 1
 
 			cell.neighbour_count = count
-			# Keep visuals up-to-date for future reveals
-			# (actual text only shows when revealed)
 
 func _flood_fill_from(x_start: int, y_start: int) -> void:
 	var queue: Array = []
@@ -290,23 +288,35 @@ func _on_replay_button_pressed():
 	_update_background()
 
 func set_difficulty(difficulty_level: String) -> void:
+	var new_cols: int
+	var new_rows: int
+	var new_mine_count: int
+	
 	match difficulty_level:
 		"easy":
-			cols = 9
-			rows = 9
-			mine_count = 10
+			new_cols = 9
+			new_rows = 9
+			new_mine_count = 10
 		"medium":
-			cols = 16
-			rows = 16
-			mine_count = 40
+			new_cols = 16
+			new_rows = 16
+			new_mine_count = 40
 		"hard":
-			cols = 30
-			rows = 16
-			mine_count = 99
+			new_cols = 30
+			new_rows = 16
+			new_mine_count = 99
 		_:
-			cols = 9
-			rows = 9
-			mine_count = 10
+			new_cols = 9
+			new_rows = 9
+			new_mine_count = 10
+	
+	if new_cols == cols and new_rows == rows and new_mine_count == mine_count:
+		print("Difficulty already set to ", difficulty_level, ". Skipping reset.")
+		return
+	
+	cols = new_cols
+	rows = new_rows
+	mine_count = new_mine_count
 	
 	_update_wrapper_size()
 	
@@ -316,15 +326,6 @@ func set_difficulty(difficulty_level: String) -> void:
 	trigger_poof_transition()
 	
 	poof_timer.start(POOF_DELAY_TIME)
-	
-	#call_deferred("_reset_board_after_poof")
-	
-	#_create_board()
-	#_update_background()
-
-#func _reset_board_after_poof():
-	#_create_board()
-	#_update_background()
 
 func _on_easy_button_pressed() -> void:
 	set_difficulty("easy")
