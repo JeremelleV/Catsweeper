@@ -4,12 +4,22 @@ extends Node2D
 @export var vertical_bg_texture: Texture2D 
 @export var horizontal_bg_texture: Texture2D
 
-# The path is: self (Gameboard) -> parent (BoardWrapper) -> parent (CenterContainer) -> parent (MainGame)
 @onready var main_game_root: Control = get_tree().get_root().get_child(0)
 
 @onready var bg_texture_rect: TextureRect = main_game_root.get_node("BathhouseBackground")
 
 @onready var replay_button = get_parent().get_parent().get_parent().get_node("Top_HBox").get_node("ReplayButton")
+###
+@export var border_tex_top: Texture2D
+@export var border_tex_bottom: Texture2D
+@export var border_tex_left: Texture2D
+@export var border_tex_right: Texture2D
+@export var border_tex_corner_tl: Texture2D # Top-Left
+@export var border_tex_corner_tr: Texture2D # Top-Right
+@export var border_tex_corner_bl: Texture2D # Bottom-Left
+@export var border_tex_corner_br: Texture2D # Bottom-Right
+
+@onready var game_board_border = get_parent().get_node("GameBoardBorder")
 ###
 
 @export var cols: int = 9
@@ -76,6 +86,7 @@ func _create_board() -> void:
 			row.append(cell)
 		cells.append(row)
 
+	_draw_border()
 	replay_button.hide()
 
 func _input(event: InputEvent) -> void:
@@ -288,3 +299,38 @@ func _on_medium_button_pressed() -> void:
 
 func _on_hard_button_pressed() -> void:
 	set_difficulty("hard")
+
+
+func _draw_border() -> void:
+	for child in game_board_border.get_children():
+		child.queue_free()
+		
+	var board_width = cols * cell_size
+	var board_height = rows * cell_size
+	
+	const TILE_SIZE = 32
+	
+	_create_sprite(border_tex_corner_tl, Vector2(-TILE_SIZE, -TILE_SIZE))
+	_create_sprite(border_tex_corner_tr, Vector2(board_width, -TILE_SIZE))
+	_create_sprite(border_tex_corner_bl, Vector2(-TILE_SIZE, board_height))
+	_create_sprite(border_tex_corner_br, Vector2(board_width, board_height))
+	
+	for i in range(cols):
+		_create_sprite(border_tex_top, Vector2(i * cell_size, -TILE_SIZE))
+		_create_sprite(border_tex_bottom, Vector2(i * cell_size, board_height))
+	
+	for i in range(rows):
+		_create_sprite(border_tex_left, Vector2(-TILE_SIZE, i * cell_size))
+		_create_sprite(border_tex_right, Vector2(board_width, i * cell_size))
+
+func _create_sprite(texture: Texture2D, position: Vector2) -> void:
+	if not texture:
+		return
+	
+	const TILE_SIZE = 32
+	
+	var sprite = Sprite2D.new()
+	sprite.texture = texture
+	sprite.position = position + Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
+	game_board_border.add_child(sprite)
+	
