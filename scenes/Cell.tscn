@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cwvnqkt4wh0ye"]
+[gd_scene load_steps=11 format=3 uid="uid://cwvnqkt4wh0ye"]
 
 [ext_resource type="Script" uid="uid://dj60g1781chtc" path="res://scripts/Cell.gd" id="1_rd428"]
 [ext_resource type="Texture2D" uid="uid://cufhc8v58m7ov" path="res://assets/sprites/Hidden_Cat_Idle.png" id="2_8ypbm"]
 [ext_resource type="Texture2D" uid="uid://cl1jxjc42ha64" path="res://assets/sprites/Water_Empty.png" id="3_g6ws7"]
 [ext_resource type="Texture2D" uid="uid://cs0jtmb1u3a84" path="res://assets/sprites/Mine_Cat.png" id="4_60yta"]
+[ext_resource type="Texture2D" uid="uid://cwrpkxd17str0" path="res://assets/sprites/sick_cat.png" id="5_t8vqj"]
 [ext_resource type="Texture2D" uid="uid://ctt4jw8dpi8vn" path="res://assets/sprites/cat_sink_0.png" id="5_yo6he"]
 [ext_resource type="Texture2D" uid="uid://dhnansl7xa8p1" path="res://assets/sprites/cat_sink_1.png" id="6_t8vqj"]
 [ext_resource type="Texture2D" uid="uid://b5h8017005kai" path="res://assets/sprites/cat_sink_2.png" id="7_cj7bp"]
@@ -29,6 +30,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("5_t8vqj")
+}],
+"loop": true,
+"name": &"sick",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("5_yo6he")
 }, {
 "duration": 1.0,
@@ -50,6 +59,7 @@ script = ExtResource("1_rd428")
 tex_hidden_cat = ExtResource("2_8ypbm")
 tex_water = ExtResource("3_g6ws7")
 tex_mine_cat = ExtResource("4_60yta")
+tex_sick_cat = ExtResource("5_t8vqj")
 
 [node name="Background" type="Sprite2D" parent="."]
 centered = false

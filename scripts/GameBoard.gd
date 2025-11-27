@@ -21,6 +21,7 @@ extends Node2D
 
 @onready var game_board_border = get_parent().get_node("GameBoardBorder")
 ###
+const CHECKER_MODULATE_COLOR = Color(0.75,0.95,0.9)
 
 @export var cols: int = 9
 @export var rows: int = 9
@@ -78,6 +79,11 @@ func _create_board() -> void:
 		var row: Array = []
 		for x in range(cols):
 			var cell = CellScene.instantiate()
+			
+			if (x + y) % 2 == 0:
+				var cell_background = cell.get_node("Background")
+				
+				cell_background.modulate = CHECKER_MODULATE_COLOR
 			
 			cell.position = Vector2(x * cell_size, y * cell_size)
 			
@@ -232,6 +238,9 @@ func _trigger_mine(x: int, y: int) -> void:
 			var cell = cells[yy][xx]
 			if cell.has_mine:
 				cell.show_mine_revealed()
+			
+			elif cell.state == CellState.HIDDEN:
+				cell.show_sick()
 
 	cells[y][x].show_mine_triggered()
 	

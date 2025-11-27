@@ -16,6 +16,7 @@ var state: CellState = CellState.HIDDEN
 @export var tex_water: Texture2D
 @export var tex_mine_cat: Texture2D
 @export var tex_flag_icon: Texture2D
+@export var tex_sick_cat: Texture2D
 
 func setup(x: int, y: int, size: int) -> void:
 	coord = Vector2i(x, y)
@@ -90,7 +91,7 @@ func play_pee_poo_wave(delay: float) -> void:
 		tween.tween_interval(delay)
 		
 	# Start from normal
-	background.modulate = Color(1,1,1,1)
+	#background.modulate = Color(1,1,1,1)
 	
 	# Tween to a yellowish tint 
 	tween.tween_property(
@@ -105,7 +106,7 @@ func _refresh_visual() -> void:
 		background.texture = tex_water
 	else:
 		background.texture = null
-	background.modulate = Color(1, 1, 1, 1)
+	#background.modulate = Color(1, 1, 1, 1)
 
 	match state:
 		CellState.HIDDEN:
@@ -164,3 +165,13 @@ func _on_sink_animation_finished() -> void:
 		foreground.stop()
 		foreground.animation = "idle"
 		foreground.frame = 0
+
+func show_sick() -> void:
+	if state == CellState.HIDDEN and not has_mine:
+		if foreground:
+			if foreground.sprite_frames and foreground.sprite_frames.has_animation("sick"):
+				foreground.stop()
+				foreground.play("sick")
+				foreground.visible = true
+				
+				#modulate = Color(1, 1, 1)
