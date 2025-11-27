@@ -1,6 +1,11 @@
 extends Node2D
 
 ###
+@onready var poof_timer: Timer = get_parent().get_node("PoofTimer")
+const POOF_DELAY_TIME = 0.3
+@export var poof_effect_scene: PackedScene
+@onready var board_wrapper = get_parent()
+###
 @export var vertical_bg_texture: Texture2D 
 @export var horizontal_bg_texture: Texture2D
 
@@ -39,11 +44,19 @@ var rng := RandomNumberGenerator.new()
 var CellScene := preload("res://scenes/Cell.tscn")
 
 func _ready() -> void:
+	poof_timer.timeout.connect(_reset_board_after_delay)
+	
 	rng.randomize()
 	_create_board()
 
 	_update_background()
 	get_viewport().size_changed.connect(_update_background)
+
+func _reset_board_after_delay():
+	_create_board()
+	_update_background()
+	visible = true
+	game_board_border.visible = true
 
 func _update_background():
 	var viewport_size = get_viewport_rect().size
@@ -294,9 +307,24 @@ func set_difficulty(difficulty_level: String) -> void:
 			cols = 9
 			rows = 9
 			mine_count = 10
-	_create_board()
-	_update_background()
+	
+	_update_wrapper_size()
+	
+	visible = false
+	game_board_border.visible = false
+	
+	trigger_poof_transition()
+	
+	poof_timer.start(POOF_DELAY_TIME)
+	
+	#call_deferred("_reset_board_after_poof")
+	
+	#_create_board()
+	#_update_background()
 
+#func _reset_board_after_poof():
+	#_create_board()
+	#_update_background()
 
 func _on_easy_button_pressed() -> void:
 	set_difficulty("easy")
@@ -340,6 +368,44 @@ func _create_sprite(texture: Texture2D, position: Vector2) -> void:
 	
 	var sprite = Sprite2D.new()
 	sprite.texture = texture
-	sprite.position = position + Vector2(TILE_SIZE / 2, TILE_SIZE / 2)
+	sprite.position = position + Vector2(TILE_SIZE / 2.0, TILE_SIZE / 2.0)
 	game_board_border.add_child(sprite)
 	
+func trigger_poof_transition() -> void:
+	if not poof_effect_scene:
+		push_warning("Poof effect scene not set.")
+		return
+	
+	var poof_instance = poof_effect_scene.instantiate()
+	board_wrapper.add_child(poof_instance)
+	
+	var board_width = cols * cell_size
+	var board_height = rows * cell_size
+	
+	const OVERSIZE_CELLS = 4.0
+	var oversize_pixels = OVERSIZE_CELLS * cell_size * 2.0
+	
+	var target_width = board_width + oversize_pixels
+	var target_height = board_height + oversize_pixels
+	
+	var base_frame_size = 512.0 # Adjust
+	
+	var scale_x = target_width / base_frame_size
+	var scale_y = target_height / base_frame_size
+	
+	poof_instance.scale = Vector2(scale_x,scale_y)
+	
+	poof_instance.position = Vector2(board_width / 2.0, board_height / 2.0)
+	
+	poof_instance.play("poof")
+
+func _update_wrapper_size() -> void:
+	var board_width = cols * cell_size
+	var board_height = rows * cell_size
+	
+	var wrapper = get_parent()
+	
+	if wrapper is Control:
+		wrapper.custom_minimum_size = Vector2(board_width, board_height)
+	
+	position = Vector2.ZERO

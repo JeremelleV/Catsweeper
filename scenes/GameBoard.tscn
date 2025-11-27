@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://nkm8fciwnko2"]
+[gd_scene load_steps=13 format=3 uid="uid://nkm8fciwnko2"]
 
 [ext_resource type="Script" uid="uid://6y5et454cqyo" path="res://scripts/GameBoard.gd" id="1_nx74b"]
 [ext_resource type="Texture2D" uid="uid://uwbch7xhw5q4" path="res://assets/backgrounds/bgvert.png" id="2_fbkij"]
+[ext_resource type="PackedScene" uid="uid://c2hmy3ndgrl6q" path="res://scenes/PoofEffect.tscn" id="2_yg655"]
 [ext_resource type="Texture2D" uid="uid://byfyd82rjw8j4" path="res://assets/backgrounds/bghor.png" id="3_p2sq2"]
 [ext_resource type="Texture2D" uid="uid://db1ib4jaftwc5" path="res://assets/border/border_tex_top.png" id="4_nhjkd"]
 [ext_resource type="Texture2D" uid="uid://b2ecom1a128w1" path="res://assets/border/border_tex_bottom.png" id="5_yg655"]
@@ -69,6 +70,7 @@ layout_mode = 2
 [node name="GameBoard" type="Node2D" parent="Root_VBox/CenterContainer/BoardWrapper"]
 position = Vector2(-576, -324)
 script = ExtResource("1_nx74b")
+poof_effect_scene = ExtResource("2_yg655")
 vertical_bg_texture = ExtResource("2_fbkij")
 horizontal_bg_texture = ExtResource("3_p2sq2")
 border_tex_top = ExtResource("4_nhjkd")
@@ -81,6 +83,9 @@ border_tex_corner_bl = ExtResource("10_5yngt")
 border_tex_corner_br = ExtResource("11_vuu3e")
 
 [node name="GameBoardBorder" type="Node2D" parent="Root_VBox/CenterContainer/BoardWrapper"]
+
+[node name="PoofTimer" type="Timer" parent="Root_VBox/CenterContainer/BoardWrapper"]
+one_shot = true
 
 [connection signal="pressed" from="Root_VBox/Top_HBox/DifficultyButtons/EasyButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_easy_button_pressed"]
 [connection signal="pressed" from="Root_VBox/Top_HBox/DifficultyButtons/MediumButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_medium_button_pressed"]

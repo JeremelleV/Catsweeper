@@ -1,0 +1,54 @@
+[gd_scene load_steps=12 format=3 uid="uid://c2hmy3ndgrl6q"]
+
+[ext_resource type="Texture2D" uid="uid://clr5k0l38103u" path="res://assets/sprites/poof/poof0.png" id="1_b46gq"]
+[ext_resource type="Texture2D" uid="uid://j3r4endy12iu" path="res://assets/sprites/poof/poof1.png" id="2_llf72"]
+[ext_resource type="Texture2D" uid="uid://k7wxjukyun0s" path="res://assets/sprites/poof/poof2.png" id="3_8kgio"]
+[ext_resource type="Texture2D" uid="uid://dj8ptoxkwmhux" path="res://assets/sprites/poof/poof3.png" id="4_n1wnd"]
+[ext_resource type="Texture2D" uid="uid://cc4kl1pv23fbm" path="res://assets/sprites/poof/poof4.png" id="5_6clo7"]
+[ext_resource type="Texture2D" uid="uid://dgsxfmx667fas" path="res://assets/sprites/poof/poof5.png" id="6_gon6e"]
+[ext_resource type="Texture2D" uid="uid://0xc4job2a5pj" path="res://assets/sprites/poof/poof6.png" id="7_mx13a"]
+[ext_resource type="Texture2D" uid="uid://c1pgs3d3c6tkc" path="res://assets/sprites/poof/poof7.png" id="8_qwsf0"]
+[ext_resource type="Texture2D" uid="uid://dh6e1ynlj2qbd" path="res://assets/sprites/poof/poof8.png" id="9_rjmj1"]
+[ext_resource type="Script" uid="uid://1rlhcjfl6osx" path="res://scripts/PoofEffect.gd" id="10_npha3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wijs6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_b46gq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_llf72")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_8kgio")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_n1wnd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_6clo7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_gon6e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_mx13a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_qwsf0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_rjmj1")
+}],
+"loop": false,
+"name": &"poof",
+"speed": 12.0
+}]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_wijs6")
+animation = &"poof"
+script = ExtResource("10_npha3")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
