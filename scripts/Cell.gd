@@ -92,7 +92,7 @@ func play_pee_poo_wave(delay: float) -> void:
 	tween.tween_property(
 		background,
 		"modulate",
-		Color(1.2,1.2,0.4,1.0),
+		Color(1.1,1.1,0.3,1.0),
 		0.15
 	)
 
