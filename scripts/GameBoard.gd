@@ -59,14 +59,15 @@ func _reset_board_after_delay():
 	game_board_border.visible = true
 
 func _update_background():
-	var viewport_size = get_viewport_rect().size
+	#var viewport_size = get_viewport_rect().size
 	
-	if viewport_size.x > viewport_size.y:
-		bg_texture_rect.texture = horizontal_bg_texture
-	else:
-		bg_texture_rect.texture = vertical_bg_texture
+	#if viewport_size.x > viewport_size.y:
+		#bg_texture_rect.texture = horizontal_bg_texture
+	#else:
+		#bg_texture_rect.texture = vertical_bg_texture
 	
-	bg_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	#bg_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	pass
 
 func _create_board() -> void:
 	for child in get_children():

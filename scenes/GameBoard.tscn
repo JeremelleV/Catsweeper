@@ -1,5 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://nkm8fciwnko2"]
+[gd_scene load_steps=14 format=3 uid="uid://nkm8fciwnko2"]
 
+[ext_resource type="Texture2D" uid="uid://cm0catdcffkb2" path="res://assets/backgrounds/background.png" id="1_kxtjr"]
 [ext_resource type="Script" uid="uid://6y5et454cqyo" path="res://scripts/GameBoard.gd" id="1_nx74b"]
 [ext_resource type="Texture2D" uid="uid://uwbch7xhw5q4" path="res://assets/backgrounds/bgvert.png" id="2_fbkij"]
 [ext_resource type="PackedScene" uid="uid://c2hmy3ndgrl6q" path="res://scenes/PoofEffect.tscn" id="2_yg655"]
@@ -28,7 +29,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-expand_mode = 1
+texture = ExtResource("1_kxtjr")
+stretch_mode = 3
 
 [node name="Root_VBox" type="VBoxContainer" parent="."]
 layout_mode = 1
