@@ -67,7 +67,8 @@ func _update_background():
 		#bg_texture_rect.texture = vertical_bg_texture
 	
 	#bg_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	pass
+	bg_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	bg_texture_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 func _create_board() -> void:
 	for child in get_children():
