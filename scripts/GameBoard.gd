@@ -13,7 +13,7 @@ const POOF_DELAY_TIME = 0.3
 
 @onready var bg_texture_rect: TextureRect = main_game_root.get_node("BathhouseBackground")
 
-@onready var replay_button = get_parent().get_parent().get_parent().get_node("Top_HBox").get_node("ReplayButton")
+@onready var replay_button = %ButtonRow.get_node("ReplayButton")
 ###
 @export var border_tex_top: Texture2D
 @export var border_tex_bottom: Texture2D
@@ -26,7 +26,7 @@ const POOF_DELAY_TIME = 0.3
 
 @onready var game_board_border = get_parent().get_node("GameBoardBorder")
 ###
-const CHECKER_MODULATE_COLOR = Color(0.75,0.95,0.9)
+const CHECKER_MODULATE_COLOR = Color(0.329, 0.592, 0.722)
 
 @export var cols: int = 9
 @export var rows: int = 9
@@ -97,8 +97,10 @@ func _create_board() -> void:
 			
 			if (x + y) % 2 == 0:
 				var cell_background = cell.get_node("Background")
-				
 				cell_background.modulate = CHECKER_MODULATE_COLOR
+			else:
+				var cell_background = cell.get_node("Background")
+				cell_background.modulate = Color(0.529, 0.792, 0.961)
 			
 			cell.position = Vector2(x * cell_size, y * cell_size)
 			
@@ -108,7 +110,7 @@ func _create_board() -> void:
 		cells.append(row)
 
 	_draw_border()
-	replay_button.hide()
+	#replay_button.hide()
 
 func _input(event: InputEvent) -> void:
 	if game_over:
@@ -244,7 +246,7 @@ func _trigger_mine(x: int, y: int) -> void:
 		return
 	
 	game_over = true
-	replay_button.show()
+	#replay_button.show()
 
 	for yy in range(rows):
 		for xx in range(cols):
@@ -280,14 +282,19 @@ func _check_win_condition() -> void:
 			if not cell.has_mine and cell.state != CellState.REVEALED:
 				return
 	game_over = true
-	replay_button.show()
+	#replay_button.show()
 	print("You win! 🎉")
 
 func _on_replay_button_pressed():
-	replay_button.hide()
+	#replay_button.hide()
 	
-	_create_board()
-	_update_background()
+	trigger_poof_transition()
+	visible = false
+	game_board_border.visible = false
+	poof_timer.start(POOF_DELAY_TIME)
+	
+	#_create_board()
+	#_update_background()
 
 func set_difficulty(difficulty_level: String) -> void:
 	var new_cols: int

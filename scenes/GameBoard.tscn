@@ -1,18 +1,31 @@
-[gd_scene load_steps=14 format=3 uid="uid://nkm8fciwnko2"]
+[gd_scene load_steps=27 format=3 uid="uid://nkm8fciwnko2"]
 
 [ext_resource type="Texture2D" uid="uid://cm0catdcffkb2" path="res://assets/backgrounds/background.png" id="1_kxtjr"]
 [ext_resource type="Script" uid="uid://6y5et454cqyo" path="res://scripts/GameBoard.gd" id="1_nx74b"]
+[ext_resource type="Texture2D" uid="uid://dbcumokk3civv" path="res://assets/buttons/nine_normal.png" id="2_c4wyl"]
 [ext_resource type="Texture2D" uid="uid://uwbch7xhw5q4" path="res://assets/backgrounds/bgvert.png" id="2_fbkij"]
+[ext_resource type="Script" uid="uid://dasykepa1tkbr" path="res://scripts/buttons.gd" id="2_fvqs0"]
 [ext_resource type="PackedScene" uid="uid://c2hmy3ndgrl6q" path="res://scenes/PoofEffect.tscn" id="2_yg655"]
+[ext_resource type="Texture2D" uid="uid://dtk5e50xhx7vd" path="res://assets/buttons/nine_pressed.png" id="3_fvqs0"]
 [ext_resource type="Texture2D" uid="uid://byfyd82rjw8j4" path="res://assets/backgrounds/bghor.png" id="3_p2sq2"]
 [ext_resource type="Texture2D" uid="uid://db1ib4jaftwc5" path="res://assets/border/border_tex_top.png" id="4_nhjkd"]
+[ext_resource type="Texture2D" uid="uid://tsu3w0g7rsxb" path="res://assets/buttons/nine_highlight.png" id="4_tppf5"]
+[ext_resource type="Texture2D" uid="uid://du0rdv43t1qi8" path="res://assets/buttons/six_normal.png" id="5_11ejg"]
 [ext_resource type="Texture2D" uid="uid://b2ecom1a128w1" path="res://assets/border/border_tex_bottom.png" id="5_yg655"]
+[ext_resource type="Texture2D" uid="uid://doogo408qwpsn" path="res://assets/buttons/six_pressed.png" id="6_g0hcn"]
 [ext_resource type="Texture2D" uid="uid://db68uqbm2o8v8" path="res://assets/border/border_tex_left.png" id="6_kxtjr"]
+[ext_resource type="Texture2D" uid="uid://d4f0aajyi6axy" path="res://assets/buttons/six_highlight.png" id="7_1nnu7"]
 [ext_resource type="Texture2D" uid="uid://mx13i1dhpde4" path="res://assets/border/border_tex_right.png" id="7_uixav"]
+[ext_resource type="Texture2D" uid="uid://dv48osrnigokv" path="res://assets/buttons/thirty_normal.png" id="8_anyy6"]
 [ext_resource type="Texture2D" uid="uid://bunaqtuhdhkb8" path="res://assets/border/border_tex_tl.png" id="8_foxsi"]
+[ext_resource type="Texture2D" uid="uid://h6cym604kvhp" path="res://assets/buttons/thirty_pressed.png" id="9_1i3ii"]
 [ext_resource type="Texture2D" uid="uid://dvcyhsy5jpocw" path="res://assets/border/border_tex_tr.png" id="9_2ro5p"]
 [ext_resource type="Texture2D" uid="uid://bk26xvgchj3vg" path="res://assets/border/border_tex_corner_bl.png" id="10_5yngt"]
+[ext_resource type="Texture2D" uid="uid://7rwuvesl3dq0" path="res://assets/buttons/thirty_highlight.png" id="10_o180a"]
+[ext_resource type="Texture2D" uid="uid://smyyvmh603v5" path="res://assets/buttons/cat_normal.png" id="11_h8khk"]
 [ext_resource type="Texture2D" uid="uid://bisny1syqynnn" path="res://assets/border/border_tex_corner_br.png" id="11_vuu3e"]
+[ext_resource type="Texture2D" uid="uid://c2v7obceq7l6x" path="res://assets/buttons/cat_pressed.png" id="12_d257i"]
+[ext_resource type="Texture2D" uid="uid://8olu1jwbl0ps" path="res://assets/buttons/cat_highlight.png" id="13_2l4y3"]
 
 [node name="MainGame" type="Control"]
 layout_mode = 3
@@ -32,45 +45,66 @@ grow_vertical = 2
 texture = ExtResource("1_kxtjr")
 stretch_mode = 6
 
-[node name="Root_VBox" type="VBoxContainer" parent="."]
-layout_mode = 1
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ButtonContainer" type="Control" parent="UI"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_fvqs0")
 
-[node name="Top_HBox" type="HBoxContainer" parent="Root_VBox"]
-layout_mode = 2
+[node name="ButtonRow" type="BoxContainer" parent="UI/ButtonContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 460.0
+offset_bottom = 200.0
+mouse_filter = 2
 
-[node name="DifficultyButtons" type="HBoxContainer" parent="Root_VBox/Top_HBox"]
+[node name="EasyButton" type="TextureButton" parent="UI/ButtonContainer/ButtonRow"]
 layout_mode = 2
+texture_normal = ExtResource("2_c4wyl")
+texture_pressed = ExtResource("3_fvqs0")
+texture_hover = ExtResource("4_tppf5")
+stretch_mode = 5
 
-[node name="EasyButton" type="Button" parent="Root_VBox/Top_HBox/DifficultyButtons"]
+[node name="MediumButton" type="TextureButton" parent="UI/ButtonContainer/ButtonRow"]
 layout_mode = 2
-text = "Easy"
+texture_normal = ExtResource("5_11ejg")
+texture_pressed = ExtResource("6_g0hcn")
+texture_hover = ExtResource("7_1nnu7")
+stretch_mode = 5
 
-[node name="MediumButton" type="Button" parent="Root_VBox/Top_HBox/DifficultyButtons"]
+[node name="HardButton" type="TextureButton" parent="UI/ButtonContainer/ButtonRow"]
 layout_mode = 2
-text = "Medium"
+texture_normal = ExtResource("8_anyy6")
+texture_pressed = ExtResource("9_1i3ii")
+texture_hover = ExtResource("10_o180a")
+stretch_mode = 5
 
-[node name="HardButton" type="Button" parent="Root_VBox/Top_HBox/DifficultyButtons"]
+[node name="ReplayButton" type="TextureButton" parent="UI/ButtonContainer/ButtonRow"]
 layout_mode = 2
-text = "Hard"
+texture_normal = ExtResource("11_h8khk")
+texture_pressed = ExtResource("12_d257i")
+texture_hover = ExtResource("13_2l4y3")
+stretch_mode = 5
 
-[node name="ReplayButton" type="Button" parent="Root_VBox/Top_HBox"]
-layout_mode = 2
-text = "Play Again"
-
-[node name="CenterContainer" type="CenterContainer" parent="Root_VBox"]
-layout_mode = 2
+[node name="CenterContainer" type="CenterContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
-[node name="BoardWrapper" type="Control" parent="Root_VBox/CenterContainer"]
+[node name="BoardWrapper" type="Control" parent="UI/CenterContainer"]
 layout_mode = 2
 
-[node name="GameBoard" type="Node2D" parent="Root_VBox/CenterContainer/BoardWrapper"]
-position = Vector2(-576, -324)
+[node name="GameBoard" type="Node2D" parent="UI/CenterContainer/BoardWrapper"]
 script = ExtResource("1_nx74b")
 poof_effect_scene = ExtResource("2_yg655")
 vertical_bg_texture = ExtResource("2_fbkij")
@@ -84,12 +118,12 @@ border_tex_corner_tr = ExtResource("9_2ro5p")
 border_tex_corner_bl = ExtResource("10_5yngt")
 border_tex_corner_br = ExtResource("11_vuu3e")
 
-[node name="GameBoardBorder" type="Node2D" parent="Root_VBox/CenterContainer/BoardWrapper"]
+[node name="GameBoardBorder" type="Node2D" parent="UI/CenterContainer/BoardWrapper"]
 
-[node name="PoofTimer" type="Timer" parent="Root_VBox/CenterContainer/BoardWrapper"]
+[node name="PoofTimer" type="Timer" parent="UI/CenterContainer/BoardWrapper"]
 one_shot = true
 
-[connection signal="pressed" from="Root_VBox/Top_HBox/DifficultyButtons/EasyButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_easy_button_pressed"]
-[connection signal="pressed" from="Root_VBox/Top_HBox/DifficultyButtons/MediumButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_medium_button_pressed"]
-[connection signal="pressed" from="Root_VBox/Top_HBox/DifficultyButtons/HardButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_hard_button_pressed"]
-[connection signal="pressed" from="Root_VBox/Top_HBox/ReplayButton" to="Root_VBox/CenterContainer/BoardWrapper/GameBoard" method="_on_replay_button_pressed"]
+[connection signal="pressed" from="UI/ButtonContainer/ButtonRow/EasyButton" to="UI/CenterContainer/BoardWrapper/GameBoard" method="_on_easy_button_pressed"]
+[connection signal="pressed" from="UI/ButtonContainer/ButtonRow/MediumButton" to="UI/CenterContainer/BoardWrapper/GameBoard" method="_on_medium_button_pressed"]
+[connection signal="pressed" from="UI/ButtonContainer/ButtonRow/HardButton" to="UI/CenterContainer/BoardWrapper/GameBoard" method="_on_hard_button_pressed"]
+[connection signal="pressed" from="UI/ButtonContainer/ButtonRow/ReplayButton" to="UI/CenterContainer/BoardWrapper/GameBoard" method="_on_replay_button_pressed"]
